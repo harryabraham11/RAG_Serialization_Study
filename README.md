@@ -28,23 +28,24 @@ This is a small pilot, not a large-scale benchmark — see Limitations below —
 
 ## Repository Structure
 
+```
 ├── data/
-│ ├── raw_pdfs/ # Source papers (see Reproduction below for links)
-│ ├── parsed_naive/ # PyMuPDF text extraction output
-│ ├── parsed_structured/ # Docling markdown extraction output
-│ ├── chunks_naive/ # Chunked naive corpus (retrieval-ready)
-│ └── chunks_structured/ # Chunked structured corpus (retrieval-ready)
+│   ├── raw_pdfs/            # Source papers (see Reproduction below for links)
+│   ├── parsed_naive/        # PyMuPDF text extraction output
+│   ├── parsed_structured/   # Docling markdown extraction output
+│   ├── chunks_naive/        # Chunked naive corpus (retrieval-ready)
+│   └── chunks_structured/   # Chunked structured corpus (retrieval-ready)
 ├── questions/
-│ └── questions.json # 15 hand-verified questions with gold chunk IDs
+│   └── questions.json       # 15 hand-verified questions with gold chunk IDs
 ├── src/
-│ ├── parsing/ # PDF -> text/markdown extraction scripts
-│ ├── retrieval/ # Chunking, BM25, and dense retrieval scripts
-│ └── eval/ # Full evaluation pipeline + gold-chunk verification tools
+│   ├── parsing/               # PDF -> text/markdown extraction scripts
+│   ├── retrieval/             # Chunking, BM25, and dense retrieval scripts
+│   └── eval/                  # Full evaluation pipeline + gold-chunk verification tools
 ├── results/
-│ └── evaluation_results.csv # Full 90-row evaluation matrix (15 questions x 2 corpora x 3 retrievers)
+│   └── evaluation_results.csv # Full 90-row evaluation matrix (15 questions x 2 corpora x 3 retrievers)
 ├── requirements.txt
 └── README.md
-
+```
 
 ## Reproducing This Project
 
