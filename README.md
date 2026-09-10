@@ -28,6 +28,7 @@ This is a small pilot, not a large-scale benchmark — see Limitations below —
 
 ## Repository Structure
 
+```
 ├── data/
 │ ├── raw_pdfs/ # Source papers (see Reproduction below for links)
 │ ├── parsed_naive/ # PyMuPDF text extraction output
@@ -44,7 +45,7 @@ This is a small pilot, not a large-scale benchmark — see Limitations below —
 │ └── evaluation_results.csv # Full 90-row evaluation matrix (15 questions x 2 corpora x 3 retrievers)
 ├── requirements.txt
 └── README.md
-
+```
 
 ## Reproducing This Project
 
