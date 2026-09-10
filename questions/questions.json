@@ -1,0 +1,152 @@
+[
+  {
+    "paper_id": "P001",
+    "question_id": "P001_Q_text",
+    "evidence_type": "text",
+    "question": "Besides the regularized objective, what two techniques does XGBoost use to further prevent overfitting?",
+    "gold_answer": "Shrinkage (scaling newly added tree weights by a factor after each boosting step) and column (feature) subsampling.",
+    "source_location": "Section 2.3, Shrinkage and Column Subsampling",
+    "gold_chunk_ids_naive": ["P001_009"],
+    "gold_chunk_ids_structured": ["P001_014"]
+  },
+  {
+    "paper_id": "P001",
+    "question_id": "P001_Q_table",
+    "evidence_type": "table",
+    "question": "According to the system comparison table, which of the six listed systems supports out-of-core computation?",
+    "gold_answer": "XGBoost is the only one marked 'yes' for out-of-core; all other five systems (pGBRT, Spark MLLib, H2O, scikit-learn, R GBM) are marked 'no'.",
+    "source_location": "Table 1, Section 4.2",
+    "gold_chunk_ids_naive": ["P001_025"],
+    "gold_chunk_ids_structured": ["P001_028"]
+  },
+  {
+    "paper_id": "P001",
+    "question_id": "P001_Q_equation",
+    "evidence_type": "equation",
+    "question": "What are the two terms in XGBoost's regularized learning objective, and what does each one represent?",
+    "gold_answer": "A loss term that sums a differentiable convex loss function l over all training examples (measuring prediction error), plus a regularization term that sums Omega(f) over all trees, where Omega penalizes tree complexity based on the number of leaves T and the L2 norm of the leaf weights w.",
+    "source_location": "Section 2.1, Equation 2",
+    "gold_chunk_ids_naive": ["P001_006"],
+    "gold_chunk_ids_structured": ["P001_010"]
+  },
+  {
+    "paper_id": "P002",
+    "question_id": "P002_Q_text",
+    "evidence_type": "text",
+    "question": "According to the paper, what three key properties make selective SSMs (and the Mamba architecture) suitable as a backbone for general foundation models?",
+    "gold_answer": "High quality (selectivity brings strong performance on dense modalities like language and genomics), fast training and inference (computation and memory scale linearly in sequence length), and long context (performance improves with sequence lengths up to 1 million).",
+    "source_location": "Section 3 (Selective State Space Models), introductory paragraph",
+    "gold_chunk_ids_naive": ["P002_004", "P002_005"],
+    "gold_chunk_ids_structured": ["P002_005"]
+  },
+  {
+    "paper_id": "P002",
+    "question_id": "P002_Q_table",
+    "evidence_type": "table",
+    "question": "According to the Selective Copying results table, which architecture-and-layer combination achieves the highest accuracy, and what is that accuracy?",
+    "gold_answer": "The Mamba architecture combined with the S6 (selective SSM) layer achieves 99.8% accuracy, the highest of all combinations tested (compared to, e.g., 18.3% for plain S4 with no gating).",
+    "source_location": "Table 1, Section 4.1.1 (Selective Copying)",
+    "gold_chunk_ids_naive": ["P002_035"],
+    "gold_chunk_ids_structured": ["P002_040"]
+  },
+  {
+    "paper_id": "P002",
+    "question_id": "P002_Q_equation",
+    "evidence_type": "equation",
+    "question": "Under the special case described in Theorem 1, what does the selective SSM recurrence simplify to, and what does the gate g_t represent?",
+    "gold_answer": "It simplifies to a classic gated RNN update: h_t = (1 - g_t) * h_{t-1} + g_t * x_t, where g_t = sigmoid(Linear(x_t)). The gate controls the interpolation between retaining the previous hidden state and fully taking in the new input.",
+    "source_location": "Section 3.5.1, Theorem 1, Equation 5",
+    "gold_chunk_ids_naive": ["P002_026"],
+    "gold_chunk_ids_structured": ["P002_029"]
+  },
+  {
+    "paper_id": "P003",
+    "question_id": "P003_Q_text",
+    "evidence_type": "text",
+    "question": "What method does DINOv2 use to build its curated pretraining dataset, and why is it notable compared to prior approaches?",
+    "gold_answer": "An automatic self-supervised image retrieval pipeline that clusters and matches uncurated web images against curated source datasets using cosine similarity on embeddings from a self-supervised ViT. It is notable because it requires no metadata, no text, and no manual annotation, unlike prior curation pipelines.",
+    "source_location": "Section 3, Data Processing",
+    "gold_chunk_ids_naive": ["P003_012"],
+    "gold_chunk_ids_structured": ["P003_013"]
+  },
+  {
+    "paper_id": "P003",
+    "question_id": "P003_Q_table",
+    "evidence_type": "table",
+    "question": "According to the training-recipe ablation table, what INet-1k k-NN and linear-probe accuracy does the final DINOv2 recipe ('+Untying heads = DINOv2') achieve, starting from the iBOT baseline of 72.9 k-NN?",
+    "gold_answer": "82.0% k-NN accuracy and 84.5% linear-probe accuracy, up from the iBOT baseline of 72.9% k-NN and 82.3% linear.",
+    "source_location": "Table 1, Section 6.1 (Improved Training Recipe)",
+    "gold_chunk_ids_naive": ["P003_022"],
+    "gold_chunk_ids_structured": ["P003_025"]
+  },
+  {
+    "paper_id": "P003",
+    "question_id": "P003_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the DINO loss term computed from, and what do p_s and p_t represent in it?",
+    "gold_answer": "The DINO loss is the negative sum of p_t times log(p_s) -- a cross-entropy between the teacher's output distribution p_t and the student's output distribution p_s, both obtained by passing class tokens through DINO heads and a softmax (the teacher additionally uses centering).",
+    "source_location": "Section 4, Discriminative Self-supervised Pre-training, Image-level objective",
+    "gold_chunk_ids_naive": ["P003_014"],
+    "gold_chunk_ids_structured": ["P003_015"]
+  },
+  {
+    "paper_id": "P004",
+    "question_id": "P004_Q_text",
+    "evidence_type": "text",
+    "question": "What is LoRA's core hypothesis about weight updates during model adaptation, and what prior finding inspired it?",
+    "gold_answer": "LoRA hypothesizes that the change in weights during adaptation has a low 'intrinsic rank.' This was inspired by prior work showing that pre-trained language models have a low intrinsic dimension and can still learn efficiently even when randomly projected to a much smaller subspace.",
+    "source_location": "Section 4.1, Low-Rank-Parametrized Update Matrices",
+    "gold_chunk_ids_naive": ["P004_011"],
+    "gold_chunk_ids_structured": ["P004_003"]
+  },
+  {
+    "paper_id": "P004",
+    "question_id": "P004_Q_table",
+    "evidence_type": "table",
+    "question": "According to the inference latency table (batch size 1, sequence length 128), what percentage latency increase does Adapter^H introduce compared to the Fine-Tune/LoRA baseline?",
+    "gold_answer": "+30.3% (Adapter^H measures 25.8ms vs. 19.8ms for Fine-Tune/LoRA at batch size 1, sequence length 128).",
+    "source_location": "Table 1, Section 3, Adapter Layers Introduce Inference Latency",
+    "gold_chunk_ids_naive": ["P004_010"],
+    "gold_chunk_ids_structured": ["P004_012"]
+  },
+  {
+    "paper_id": "P004",
+    "question_id": "P004_Q_equation",
+    "evidence_type": "equation",
+    "question": "What equation describes LoRA's modified forward pass, and what do the matrices A and B represent in it?",
+    "gold_answer": "h = W0*x + BAx, where W0 is the frozen pre-trained weight matrix, and B (d x r) and A (r x k) are the trainable low-rank decomposition matrices whose product BA approximates the weight update, with rank r much smaller than min(d, k).",
+    "source_location": "Section 4.1, Equation 3",
+    "gold_chunk_ids_naive": ["P004_020"],
+    "gold_chunk_ids_structured": ["P004_027"]
+  },
+  {
+    "paper_id": "P005",
+    "question_id": "P005_Q_text",
+    "evidence_type": "text",
+    "question": "What are the three neural network components of the Dreamer algorithm, and what role does each one play?",
+    "gold_answer": "The world model predicts the outcomes of potential actions, the critic judges the value of each predicted outcome, and the actor chooses actions to reach the most valuable outcomes. All three are trained concurrently from replayed experience.",
+    "source_location": "Introduction / Learning algorithm section",
+    "gold_chunk_ids_naive": ["P005_006"],
+    "gold_chunk_ids_structured": ["P005_006"]
+  },
+  {
+    "paper_id": "P005",
+    "question_id": "P005_Q_table",
+    "evidence_type": "table",
+    "question": "According to the Minecraft Diamond results table, what average return did Dreamer achieve at 100M environment steps, and how does it compare to the other methods tested?",
+    "gold_answer": "Dreamer achieved a return of 9.1, the highest of the four methods compared -- ahead of IMPALA (7.1), Rainbow (6.3), and PPO (5.1).",
+    "source_location": "Table 5, Minecraft additional results",
+    "gold_chunk_ids_naive": ["P005_053"],
+    "gold_chunk_ids_structured": ["P005_060"]
+  },
+  {
+    "paper_id": "P005",
+    "question_id": "P005_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the symlog transformation used in Dreamer's prediction loss, and why is it preferred over a plain logarithm?",
+    "gold_answer": "symlog(x) = sign(x) * ln(|x| + 1). Unlike a plain logarithm, it is defined for negative values and is symmetric around the origin, letting the network compress both large positive and negative target magnitudes while still behaving close to the identity function for small values near zero.",
+    "source_location": "Robust predictions section, Equation 9",
+    "gold_chunk_ids_naive": ["P005_017"],
+    "gold_chunk_ids_structured": ["P005_019"]
+  }
+]
