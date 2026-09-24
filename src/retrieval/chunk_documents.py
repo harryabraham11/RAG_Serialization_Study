@@ -7,9 +7,6 @@ def word_count(text):
 
 
 def split_long_paragraph(paragraph, target_words=200):
-    """If a single paragraph is already much bigger than our target chunk size
-    (common in naive PDF text with few/no blank lines), break it into
-    fixed-size word windows so it doesn't become one giant chunk."""
     words = paragraph.split()
     if len(words) <= target_words * 1.5:
         return [paragraph]
@@ -19,8 +16,39 @@ def split_long_paragraph(paragraph, target_words=200):
     return pieces
 
 
+def split_long_table(table_lines, target_words=200, hard_cap_multiplier=3):
+    """Splits a table by accumulated WORD COUNT across rows, not row count --
+    a table can have very few rows but be enormous if each row is wide
+    (many columns). The header + separator row are repeated at the top of
+    each split piece so every piece stays a valid, self-contained table."""
+    if len(table_lines) <= 2:
+        return [table_lines]
+    header = table_lines[:2]
+    header_words = word_count(" ".join(header))
+    data_rows = table_lines[2:]
+
+    total_words = word_count(" ".join(table_lines))
+    if total_words <= target_words * hard_cap_multiplier:
+        return [table_lines]
+
+    pieces = []
+    current_rows = []
+    current_words = header_words
+    for row in data_rows:
+        row_words = word_count(row)
+        if current_words + row_words > target_words and current_rows:
+            pieces.append(header + current_rows)
+            current_rows = []
+            current_words = header_words
+        current_rows.append(row)
+        current_words += row_words
+    if current_rows:
+        pieces.append(header + current_rows)
+
+    return pieces if pieces else [table_lines]
+
+
 def group_into_chunks(paragraphs, target_words=200, section=None, chunk_type="text"):
-    # First, break up any paragraph that's already oversized on its own
     expanded = []
     for para in paragraphs:
         expanded.extend(split_long_paragraph(para, target_words=target_words))
@@ -42,14 +70,15 @@ def group_into_chunks(paragraphs, target_words=200, section=None, chunk_type="te
 
 
 def merge_small_chunks(chunks, min_words=60):
-    """Folds any undersized 'text' chunk into the next chunk, so we don't end up
-    with tiny orphan chunks near section headings. Tables are never touched."""
     merged = []
     buffer = None
     for chunk in chunks:
         if chunk["chunk_type"] == "table":
             if buffer:
-                merged.append(buffer)
+                if word_count(buffer["text"]) < min_words and merged and merged[-1]["chunk_type"] != "table":
+                    merged[-1]["text"] = merged[-1]["text"] + "\n\n" + buffer["text"]
+                else:
+                    merged.append(buffer)
                 buffer = None
             merged.append(chunk)
             continue
@@ -61,7 +90,7 @@ def merge_small_chunks(chunks, min_words=60):
             merged.append(buffer)
             buffer = None
     if buffer:
-        if merged and merged[-1]["chunk_type"] != "table":
+        if word_count(buffer["text"]) < min_words and merged and merged[-1]["chunk_type"] != "table":
             merged[-1]["text"] = merged[-1]["text"] + "\n\n" + buffer["text"]
         else:
             merged.append(buffer)
@@ -98,6 +127,17 @@ def chunk_structured_markdown(text, target_words=200, min_flush_words=80):
                                              section=current_section, chunk_type="text"))
             buffer_paragraphs = []
 
+    def flush_table():
+        nonlocal table_lines
+        if not table_lines:
+            return
+        if len(table_lines) < 2:
+            buffer_paragraphs.append(" ".join(table_lines).strip())
+        else:
+            for piece in split_long_table(table_lines, target_words=target_words):
+                chunks.append({"text": "\n".join(piece), "section": current_section, "chunk_type": "table"})
+        table_lines = []
+
     for line in lines:
         stripped = line.strip()
 
@@ -109,8 +149,7 @@ def chunk_structured_markdown(text, target_words=200, min_flush_words=80):
             continue
         else:
             if in_table:
-                chunks.append({"text": "\n".join(table_lines), "section": current_section, "chunk_type": "table"})
-                table_lines = []
+                flush_table()
                 in_table = False
 
         if stripped.startswith("#"):
@@ -126,15 +165,15 @@ def chunk_structured_markdown(text, target_words=200, min_flush_words=80):
 
         buffer_lines.append(stripped)
 
-    if in_table and table_lines:
-        chunks.append({"text": "\n".join(table_lines), "section": current_section, "chunk_type": "table"})
+    if in_table:
+        flush_table()
     flush_paragraph()
     flush_all_as_chunks()
 
     return merge_small_chunks(chunks)
 
 
-def build_corpus(input_folder, chunker, output_path):
+def build_corpus(input_folder, chunker, output_path, target_words=200, hard_cap_multiplier=3):
     all_chunks = []
     for filename in sorted(os.listdir(input_folder)):
         if filename.endswith(".txt") or filename.endswith(".md"):
@@ -156,6 +195,14 @@ def build_corpus(input_folder, chunker, output_path):
         json.dump(all_chunks, f, indent=2, ensure_ascii=False)
 
     print(f"Saved {len(all_chunks)} chunks to {output_path}")
+
+    hard_cap = target_words * hard_cap_multiplier
+    remaining_outliers = [c for c in all_chunks if word_count(c["text"]) > hard_cap]
+    if remaining_outliers:
+        print(f"  NOTE: {len(remaining_outliers)} chunk(s) still exceed {hard_cap} words "
+              f"(a single table row too wide to split further). Avoid using these as gold chunks:")
+        for c in sorted(remaining_outliers, key=lambda c: -word_count(c["text"]))[:10]:
+            print(f"    {c['chunk_id']} ({word_count(c['text'])} words)")
 
 
 if __name__ == "__main__":
