@@ -148,5 +148,735 @@
     "source_location": "Robust predictions section, Equation 9",
     "gold_chunk_ids_naive": ["P005_017"],
     "gold_chunk_ids_structured": ["P005_019"]
+  },
+  {
+    "paper_id": "P006",
+    "question_id": "P006_Q_text",
+    "evidence_type": "text",
+    "question": "How many parallel attention heads does the base Transformer model use, and what is the dimension of the keys and values in each head?",
+    "gold_answer": "8 attention heads (h=8), with dk = dv = dmodel/h = 64.",
+    "source_location": "Section 3.2.2, Multi-Head Attention",
+    "gold_chunk_ids_naive": ["P006_008"],
+    "gold_chunk_ids_structured": ["P006_014"]
+  },
+  {
+    "paper_id": "P006",
+    "question_id": "P006_Q_table",
+    "evidence_type": "table",
+    "question": "According to the BLEU score comparison table, what BLEU score does the Transformer (big) model achieve on the WMT 2014 English-to-German task, and how does this compare to the previous best ensemble model (GNMT+RL Ensemble)?",
+    "gold_answer": "The Transformer (big) achieves 28.4 BLEU, compared to GNMT+RL Ensemble's 26.30 BLEU -- an improvement of about 2.1 BLEU.",
+    "source_location": "Table 2, Section 6.1",
+    "gold_chunk_ids_naive": ["P006_017"],
+    "gold_chunk_ids_structured": ["P006_026"]
+  },
+  {
+    "paper_id": "P006",
+    "question_id": "P006_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the Scaled Dot-Product Attention formula, and what is the purpose of the scaling factor 1/sqrt(dk)?",
+    "gold_answer": "Attention(Q,K,V) = softmax(QK^T / sqrt(dk)) V. The scaling factor counteracts the effect where, for large dk, dot products grow large in magnitude and push the softmax function into regions with extremely small gradients.",
+    "source_location": "Section 3.2.1, Equation 1",
+    "gold_chunk_ids_naive": ["P006_006"],
+    "gold_chunk_ids_structured": ["P006_011"]
+  },
+  {
+    "paper_id": "P007",
+    "question_id": "P007_Q_text",
+    "evidence_type": "text",
+    "question": "In BERT's masking procedure for the masked language model objective, what happens to a chosen token 80% of the time, 10% of the time, and the remaining 10% of the time?",
+    "gold_answer": "80% of the time it is replaced with the [MASK] token, 10% of the time it is replaced with a random token, and 10% of the time it is left unchanged as the original word.",
+    "source_location": "Section 3.1, Task #1: Masked LM / Appendix A.1",
+    "gold_chunk_ids_naive": ["P007_041"],
+    "gold_chunk_ids_structured": ["P007_051"]
+  },
+  {
+    "paper_id": "P007",
+    "question_id": "P007_Q_table",
+    "evidence_type": "table",
+    "question": "According to the GLUE Test results table, what average GLUE score does BERT-LARGE achieve, and how does it compare to OpenAI GPT?",
+    "gold_answer": "BERT-LARGE achieves an average GLUE score of 82.1, compared to OpenAI GPT's 75.1.",
+    "source_location": "Table 1, Section 3.2",
+    "gold_chunk_ids_naive": ["P007_017"],
+    "gold_chunk_ids_structured": ["P007_019"]
+  },
+  {
+    "paper_id": "P007",
+    "question_id": "P007_Q_equation",
+    "evidence_type": "equation",
+    "question": "What equation is used to compute the probability that a given word marks the start of the answer span in BERT's SQuAD fine-tuning, and what do S and Ti represent?",
+    "gold_answer": "Pi = e^(S.Ti) / sum_j e^(S.Tj), a softmax over the dot product of a learned start vector S with each token's final hidden representation Ti; an analogous formula with a separate end vector E is used for the end position.",
+    "source_location": "Section 4.2, SQuAD v1.1",
+    "gold_chunk_ids_naive": ["P007_019"],
+    "gold_chunk_ids_structured": ["P007_026"]
+  },
+  {
+    "paper_id": "P008",
+    "question_id": "P008_Q_text",
+    "evidence_type": "text",
+    "question": "How many different model sizes did the GPT-3 paper train, and what is the range of parameter counts covered?",
+    "gold_answer": "8 different model sizes, ranging over three orders of magnitude from 125 million to 175 billion parameters, with GPT-3 itself being the 175B model.",
+    "source_location": "Section 2.1, Model and Architectures",
+    "gold_chunk_ids_naive": ["P008_023"],
+    "gold_chunk_ids_structured": ["P008_030"]
+  },
+  {
+    "paper_id": "P008",
+    "question_id": "P008_Q_table",
+    "evidence_type": "table",
+    "question": "According to the language modeling results table, what perplexity does GPT-3 achieve zero-shot on the Penn Treebank (PTB) benchmark, and how does this compare to the previous zero-shot state of the art?",
+    "gold_answer": "GPT-3 achieves a zero-shot perplexity of 20.5, compared to the previous zero-shot SOTA of 35.8.",
+    "source_location": "Section 3, Results (PTB table)",
+    "gold_chunk_ids_naive": ["P008_033"],
+    "gold_chunk_ids_structured": ["P008_041"]
+  },
+  {
+    "paper_id": "P008",
+    "question_id": "P008_Q_equation",
+    "evidence_type": "equation",
+    "question": "What relationship does the paper describe between validation loss and the amount of training compute, citing prior work?",
+    "gold_answer": "Validation loss follows a power-law trend as a function of training compute -- performance improves smoothly and predictably as compute increases, consistent with the scaling laws described in Kaplan et al. (2020) [KMH+20].",
+    "source_location": "Section 3, Results (Figure 3.1)",
+    "gold_chunk_ids_naive": ["P008_032"],
+    "gold_chunk_ids_structured": ["P008_044"]
+  },
+  {
+    "paper_id": "P009",
+    "question_id": "P009_Q_text",
+    "evidence_type": "text",
+    "question": "In T5's baseline pre-training objective, what happens to spans of tokens in the input, and what does the target sequence consist of?",
+    "gold_answer": "15% of tokens are randomly selected and dropped out; consecutive dropped-out tokens form a span replaced by a single unique sentinel token in the input. The target sequence consists of the dropped-out spans, each preceded by the sentinel token that replaced it, plus a final sentinel marking the end.",
+    "source_location": "Section 3.1.4, Unsupervised Objective",
+    "gold_chunk_ids_naive": ["P009_034"],
+    "gold_chunk_ids_structured": ["P009_041"]
+  },
+  {
+    "paper_id": "P009",
+    "question_id": "P009_Q_table",
+    "evidence_type": "table",
+    "question": "According to the baseline results table, what average GLUE score (with standard deviation) did T5's baseline model achieve, and how does this compare to training from scratch without pre-training?",
+    "gold_answer": "The baseline model achieved an average GLUE score of 83.28 (standard deviation 0.235), compared to 66.22 when training from scratch without any pre-training.",
+    "source_location": "Table 1, Section 3.1.5",
+    "gold_chunk_ids_naive": ["P009_035"],
+    "gold_chunk_ids_structured": ["P009_043"]
+  },
+  {
+    "paper_id": "P009",
+    "question_id": "P009_Q_equation",
+    "evidence_type": "equation",
+    "question": "What equation describes how the output of a self-attention layer is computed from the input sequence?",
+    "gold_answer": "y_i = sum_j w_{i,j} x_j, where y_i is the i-th output element, x_j is the j-th input element, and w_{i,j} is the scalar attention weight produced as a function of x_i and x_j.",
+    "source_location": "Section 3.2.1, Model Structures",
+    "gold_chunk_ids_naive": ["P009_039"],
+    "gold_chunk_ids_structured": ["P009_049"]
+  },
+  {
+    "paper_id": "P010",
+    "question_id": "P010_Q_text",
+    "evidence_type": "text",
+    "question": "What three architectural modifications does LLaMA make relative to the original Transformer, and which prior models inspired each one?",
+    "gold_answer": "Pre-normalization using RMSNorm (inspired by GPT-3), the SwiGLU activation function replacing ReLU (inspired by PaLM), and Rotary Positional Embeddings (RoPE) replacing absolute positional embeddings (inspired by GPTNeo).",
+    "source_location": "Section 2.2, Architecture",
+    "gold_chunk_ids_naive": ["P010_007"],
+    "gold_chunk_ids_structured": ["P010_010"]
+  },
+  {
+    "paper_id": "P010",
+    "question_id": "P010_Q_table",
+    "evidence_type": "table",
+    "question": "According to the pre-training data mixture table, what percentage of LLaMA's training data comes from English CommonCrawl, and what is the second largest source?",
+    "gold_answer": "English CommonCrawl makes up 67.0% of the training data; C4 is the second largest source at 15.0%.",
+    "source_location": "Table 1, Section 2.1",
+    "gold_chunk_ids_naive": ["P010_005"],
+    "gold_chunk_ids_structured": ["P010_004"]
+  },
+  {
+    "paper_id": "P010",
+    "question_id": "P010_Q_equation",
+    "evidence_type": "equation",
+    "question": "What formula does the paper use to estimate the energy consumption, in Watt-hours, required to train a model?",
+    "gold_answer": "Wh = GPU-hours x GPU power consumption x PUE (Power Usage Effectiveness), where PUE was set to 1.1 in their calculations.",
+    "source_location": "Section 6, Carbon footprint",
+    "gold_chunk_ids_naive": ["P010_031"],
+    "gold_chunk_ids_structured": ["P010_046"]
+  },
+      {
+    "paper_id": "P011",
+    "question_id": "P011_Q_text",
+    "evidence_type": "text",
+    "question": "What problem does ResNet's residual learning framework address, and how does it reformulate what each stacked layer learns?",
+    "gold_answer": "It addresses the 'degradation problem' -- where adding more layers to a suitably deep model leads to higher training error, not caused by overfitting. Instead of directly fitting a desired underlying mapping H(x), the stacked layers are reformulated to fit a residual mapping F(x) := H(x) - x, with the original mapping recast as F(x) + x via a shortcut connection.",
+    "source_location": "Section 3.1, Residual Learning",
+    "gold_chunk_ids_naive": ["P011_003"],
+    "gold_chunk_ids_structured": ["P011_005"]
+  },
+  {
+    "paper_id": "P011",
+    "question_id": "P011_Q_table",
+    "evidence_type": "table",
+    "question": "According to the top-1 error comparison table, how does the 34-layer ResNet's error compare to the 34-layer plain network's error?",
+    "gold_answer": "The 34-layer plain network has 28.54% top-1 error, while the 34-layer ResNet achieves 25.03% -- demonstrating the degradation problem is resolved by the residual formulation.",
+    "source_location": "Table 2, Section 4.1",
+    "gold_chunk_ids_naive": ["P011_017"],
+    "gold_chunk_ids_structured": ["P011_018"]
+  },
+  {
+    "paper_id": "P011",
+    "question_id": "P011_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the general form of a residual building block as defined by Equation 1, and what do x and y represent?",
+    "gold_answer": "y = F(x, {Wi}) + x, where x and y are the input and output vectors of the layers considered, and F(x, {Wi}) is the residual mapping to be learned, realized via a shortcut connection and element-wise addition.",
+    "source_location": "Section 3.2, Equation 1",
+    "gold_chunk_ids_naive": ["P011_008"],
+    "gold_chunk_ids_structured": ["P011_012"]
+  },
+  {
+    "paper_id": "P012",
+    "question_id": "P012_Q_text",
+    "evidence_type": "text",
+    "question": "How does ViT convert a 2D image into a sequence a standard Transformer can process, and what role does the [class] token play?",
+    "gold_answer": "The image is reshaped into a sequence of flattened 2D patches, each linearly projected into D dimensions to form patch embeddings. A learnable [class] token, inspired by BERT, is prepended to this sequence, and its final output state serves as the image representation used for classification.",
+    "source_location": "Section 3.1, Vision Transformer (ViT)",
+    "gold_chunk_ids_naive": ["P012_008"],
+    "gold_chunk_ids_structured": ["P012_009"]
+  },
+  {
+    "paper_id": "P012",
+    "question_id": "P012_Q_table",
+    "evidence_type": "table",
+    "question": "According to the comparison with state-of-the-art table, what ImageNet top-1 accuracy does ViT-H/14 achieve when pretrained on JFT-300M, and how does this compare to BiT-L in terms of pre-training compute?",
+    "gold_answer": "ViT-H/14 achieves 88.55% +/- 0.04 top-1 accuracy, compared to BiT-L's 87.54% +/- 0.02, while requiring substantially less pre-training compute (2.5k TPUv3-core-days vs. 9.9k for BiT-L).",
+    "source_location": "Table 2, Section 4.2",
+    "gold_chunk_ids_naive": ["P012_017"],
+    "gold_chunk_ids_structured": ["P012_020"]
+  },
+  {
+    "paper_id": "P012",
+    "question_id": "P012_Q_equation",
+    "evidence_type": "equation",
+    "question": "In Appendix A, what three equations define standard single-head self-attention (SA), and what does Equation 7 compute?",
+    "gold_answer": "[q,k,v] = z*U_qkv (Eq. 5); A = softmax(qk^T / sqrt(Dh)) (Eq. 6); SA(z) = Av (Eq. 7). Equation 7 computes the self-attention output as the attention-weighted sum of the value vectors.",
+    "source_location": "Appendix A, Multihead Self-Attention, Equations 5-7",
+    "gold_chunk_ids_naive": ["P012_036"],
+    "gold_chunk_ids_structured": ["P012_043"]
+  },
+  {
+    "paper_id": "P013",
+    "question_id": "P013_Q_text",
+    "evidence_type": "text",
+    "question": "What is CLIP's core pretraining approach, and how does it differ from standard supervised image classification?",
+    "gold_answer": "CLIP jointly trains an image encoder and a text encoder to predict the correct pairings of a batch of (image, text) training examples using a contrastive objective, rather than training an image feature extractor plus a fixed linear classifier to predict predetermined labels. It was trained on 400 million image-text pairs collected from the internet.",
+    "source_location": "Section 1, Introduction",
+    "gold_chunk_ids_naive": ["P013_007"],
+    "gold_chunk_ids_structured": ["P013_012"]
+  },
+  {
+    "paper_id": "P013",
+    "question_id": "P013_Q_table",
+    "evidence_type": "table",
+    "question": "Across the 27-dataset zero-shot evaluation, how many datasets does zero-shot CLIP outperform a fully supervised linear classifier trained on ResNet-50 features?",
+    "gold_answer": "Zero-shot CLIP outperforms the fully supervised ResNet-50 linear classifier on 16 of the 27 datasets, including ImageNet.",
+    "source_location": "Section 3.1, Figure 5",
+    "gold_chunk_ids_naive": ["P013_032"],
+    "gold_chunk_ids_structured": ["P013_037"]
+  },
+  {
+    "paper_id": "P013",
+    "question_id": "P013_Q_equation",
+    "evidence_type": "equation",
+    "question": "For a batch of N (image, text) pairs, what does CLIP's contrastive training objective optimize?",
+    "gold_answer": "CLIP computes cosine similarities across all N x N possible image-text pairings in the batch, and is trained with a symmetric cross-entropy loss to maximize the similarity of the N correct (matching) pairs while minimizing the similarity of the N^2 - N incorrect pairs.",
+    "source_location": "Section 2.2, Training",
+    "gold_chunk_ids_naive": ["P013_014"],
+    "gold_chunk_ids_structured": ["P013_015"]
+  },
+  {
+    "paper_id": "P014",
+    "question_id": "P014_Q_text",
+    "evidence_type": "text",
+    "question": "What is EfficientNet's compound scaling method, and how does it differ from prior approaches to scaling ConvNets?",
+    "gold_answer": "It uniformly scales all three dimensions -- network depth, width, and resolution -- together using a single compound coefficient, rather than arbitrarily scaling just one dimension as prior work did, which required tedious manual tuning.",
+    "source_location": "Section 3, Compound Model Scaling",
+    "gold_chunk_ids_naive": ["P014_003"],
+    "gold_chunk_ids_structured": ["P014_003"]
+  },
+  {
+    "paper_id": "P014",
+    "question_id": "P014_Q_table",
+    "evidence_type": "table",
+    "question": "According to the paper's model size versus accuracy comparison, what top-1 and top-5 accuracy does EfficientNet-B7 achieve on ImageNet, and how does its size compare to the previous state of the art (GPipe)?",
+    "gold_answer": "EfficientNet-B7 achieves 84.3% top-1 / 97.0% top-5 accuracy with 66M parameters, matching GPipe's 84.3% top-1 / 97.0% top-5 accuracy while being 8.4x smaller (GPipe uses 557M parameters).",
+    "source_location": "Table 2, Section 5.2",
+    "gold_chunk_ids_naive": ["P014_019"],
+    "gold_chunk_ids_structured": ["P014_022"]
+  },
+  {
+    "paper_id": "P014",
+    "question_id": "P014_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the compound scaling formula EfficientNet uses to scale depth, width, and resolution together, and what constraint is placed on alpha, beta, and gamma?",
+    "gold_answer": "Depth d = alpha^phi, width w = beta^phi, resolution r = gamma^phi, where phi is a user-specified coefficient controlling available resources, and alpha, beta, gamma are constants found via grid search subject to alpha * beta^2 * gamma^2 approximately equal to 2, so that total FLOPS increase by approximately 2^phi.",
+    "source_location": "Section 3, Compound Scaling Method, Equations 2-3",
+    "gold_chunk_ids_naive": ["P014_016"],
+    "gold_chunk_ids_structured": ["P014_017"]
+  },
+  {
+    "paper_id": "P015",
+    "question_id": "P015_Q_text",
+    "evidence_type": "text",
+    "question": "According to the abstract, what top-1 ImageNet accuracy does a linear classifier trained on SimCLR's self-supervised representations achieve, and how does this compare to prior state of the art?",
+    "gold_answer": "76.5% top-1 accuracy, a 7% relative improvement over the previous state of the art for self-supervised methods, matching the performance of a supervised ResNet-50.",
+    "source_location": "Abstract",
+    "gold_chunk_ids_naive": ["P015_000"],
+    "gold_chunk_ids_structured": ["P015_000"]
+  },
+  {
+    "paper_id": "P015",
+    "question_id": "P015_Q_table",
+    "evidence_type": "table",
+    "question": "When fine-tuned on only 1% of ImageNet labels, what top-5 accuracy does SimCLR (ResNet-50 4x) achieve, and how does this compare to CPC v2?",
+    "gold_answer": "SimCLR (ResNet-50 4x) achieves 85.8% top-5 accuracy with 1% of labels, ahead of CPC v2's 77.9%.",
+    "source_location": "Table 7, Section 6",
+    "gold_chunk_ids_naive": ["P015_023"],
+    "gold_chunk_ids_structured": ["P015_032"]
+  },
+  {
+    "paper_id": "P015",
+    "question_id": "P015_Q_equation",
+    "evidence_type": "equation",
+    "question": "What loss function does SimCLR use for a positive pair during contrastive training, and what does it optimize?",
+    "gold_answer": "The normalized temperature-scaled cross-entropy loss (NT-Xent): for a positive pair (i,j), the loss is -log(exp(sim(zi,zj)/tau) / sum over k!=i of exp(sim(zi,zk)/tau)), maximizing the cosine similarity between the pair's representations relative to their similarity with all other augmented examples in the batch, scaled by a temperature parameter.",
+    "source_location": "Section 2.1, Equation 1",
+    "gold_chunk_ids_naive": ["P015_006"],
+    "gold_chunk_ids_structured": ["P015_008"]
+  },
+      {
+    "paper_id": "P016",
+    "question_id": "P016_Q_text",
+    "evidence_type": "text",
+    "question": "What is the key motivation behind PPO's clipped surrogate objective, and how does it differ from TRPO's approach to constraining policy updates?",
+    "gold_answer": "PPO seeks a first-order optimization method that attains TRPO's data efficiency and reliable performance without TRPO's complexity (which requires solving a constrained optimization problem via conjugate gradient). Instead of a hard KL-divergence constraint, PPO clips the probability ratio to the interval [1-epsilon, 1+epsilon], removing the incentive to move the ratio outside this range.",
+    "source_location": "Section 3, Clipped Surrogate Objective",
+    "gold_chunk_ids_naive": ["P016_005"],
+    "gold_chunk_ids_structured": ["P016_002"]
+  },
+  {
+    "paper_id": "P016",
+    "question_id": "P016_Q_table",
+    "evidence_type": "table",
+    "question": "According to the ablation table comparing surrogate objective variants, what average normalized score does clipping with epsilon=0.2 achieve, and how does this compare to using no clipping or penalty at all?",
+    "gold_answer": "Clipping with epsilon=0.2 achieves 0.82, the best result of all variants tested, compared to -0.39 for no clipping or penalty (which performed worse than the initial random policy on one environment, half cheetah).",
+    "source_location": "Table 1, Section 6.1",
+    "gold_chunk_ids_naive": ["P016_012"],
+    "gold_chunk_ids_structured": ["P016_015"]
+  },
+  {
+    "paper_id": "P016",
+    "question_id": "P016_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is PPO's clipped surrogate objective L^CLIP, and what does taking the minimum of its two terms accomplish?",
+    "gold_answer": "L^CLIP(theta) = E_t[min(r_t(theta)*A_t, clip(r_t(theta), 1-epsilon, 1+epsilon)*A_t)], where r_t(theta) is the probability ratio between the new and old policy. Taking the minimum makes the final objective a pessimistic lower bound, ignoring an improvement in the ratio only when it would make the objective worse.",
+    "source_location": "Section 3, Equation 7",
+    "gold_chunk_ids_naive": ["P016_007"],
+    "gold_chunk_ids_structured": ["P016_006"]
+  },
+  {
+    "paper_id": "P017",
+    "question_id": "P017_Q_text",
+    "evidence_type": "text",
+    "question": "What is experience replay, and what three advantages does it provide over standard online Q-learning, according to the paper?",
+    "gold_answer": "Experience replay stores the agent's transitions in a replay memory and samples random minibatches from it for updates, rather than learning from consecutive samples. Its advantages: (1) each experience can be reused in many weight updates, improving data efficiency; (2) randomizing samples breaks correlations between consecutive samples, reducing variance; (3) it smooths learning and avoids oscillations or divergence from feedback loops that on-policy learning can create.",
+    "source_location": "Section 4, Deep Reinforcement Learning",
+    "gold_chunk_ids_naive": ["P017_013"],
+    "gold_chunk_ids_structured": ["P017_018"]
+  },
+  {
+    "paper_id": "P017",
+    "question_id": "P017_Q_table",
+    "evidence_type": "table",
+    "question": "According to the results table, what average score does DQN achieve on Breakout and Pong, and how does this compare to the previous best methods (Sarsa, Contingency)?",
+    "gold_answer": "DQN achieves 168 on Breakout and 20 on Pong. Sarsa achieved only 5.2 on Breakout and -19 on Pong; Contingency achieved 6 on Breakout and -17 on Pong -- DQN substantially outperforms both.",
+    "source_location": "Table 1, Section 5.3",
+    "gold_chunk_ids_naive": ["P017_026"],
+    "gold_chunk_ids_structured": ["P017_030"]
+  },
+  {
+    "paper_id": "P017",
+    "question_id": "P017_Q_equation",
+    "evidence_type": "equation",
+    "question": "What loss function does the Q-network minimize at each iteration, and what does the target y_i depend on?",
+    "gold_answer": "L_i(theta_i) = E[(y_i - Q(s,a;theta_i))^2], where the target y_i = E[r + gamma*max_a' Q(s',a';theta_{i-1})|s,a] depends on the network's own weights from the previous iteration theta_{i-1}, which are held fixed while optimizing the current loss -- unlike supervised learning, where targets are fixed before training begins.",
+    "source_location": "Section 4, Equation 2",
+    "gold_chunk_ids_naive": ["P017_008"],
+    "gold_chunk_ids_structured": ["P017_010"]
+  },
+  {
+    "paper_id": "P018",
+    "question_id": "P018_Q_text",
+    "evidence_type": "text",
+    "question": "What guarantee does TRPO's underlying theoretical procedure provide before any approximations are made, and how is this guarantee established?",
+    "gold_answer": "The underlying algorithm guarantees monotonic improvement of the true expected cost objective at every iteration. This is established by repeatedly minimizing a surrogate function that majorizes the true objective (touches it with equality at the current policy, upper-bounds it elsewhere), so minimizing the surrogate is guaranteed not to increase the true objective.",
+    "source_location": "Section 3, Monotonic Improvement Guarantee for General Stochastic Policies",
+    "gold_chunk_ids_naive": ["P018_029"],
+    "gold_chunk_ids_structured": ["P018_038"]
+  },
+  {
+    "paper_id": "P018",
+    "question_id": "P018_Q_table",
+    "evidence_type": "table",
+    "question": "According to the vision-based RL comparison table, what score does TRPO (vine) achieve on Q*bert, and how does this compare to Deep Q-Learning?",
+    "gold_answer": "TRPO (vine) achieves 7732.5 on Q*bert, substantially higher than Deep Q-Learning's 1952.",
+    "source_location": "Table 1, Section 8.2",
+    "gold_chunk_ids_naive": ["P018_028"],
+    "gold_chunk_ids_structured": ["P018_035"]
+  },
+  {
+    "paper_id": "P018",
+    "question_id": "P018_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the advantage function A_pi(s,a), and how is it defined in terms of the state-action value function and the value function?",
+    "gold_answer": "A_pi(s,a) = Q_pi(s,a) - V_pi(s), representing how much better or worse taking action a in state s is, compared to the average value of following policy pi from that state.",
+    "source_location": "Section 2, Preliminaries",
+    "gold_chunk_ids_naive": ["P018_003"],
+    "gold_chunk_ids_structured": ["P018_004"]
+  },
+  {
+    "paper_id": "P019",
+    "question_id": "P019_Q_text",
+    "evidence_type": "text",
+    "question": "What is the maximum entropy reinforcement learning objective used by Soft Actor-Critic, and how does it differ from the standard RL objective?",
+    "gold_answer": "J(pi) = sum_t E[(r(s_t,a_t) + alpha*H(pi(.|s_t)))], which augments the standard expected-reward objective with an entropy term weighted by a temperature parameter alpha. The actor is thus incentivized to maximize expected reward while also acting as randomly as possible (maximizing entropy), rather than maximizing reward alone.",
+    "source_location": "Section 3.2, Equation 1",
+    "gold_chunk_ids_naive": ["P019_010"],
+    "gold_chunk_ids_structured": ["P019_010"]
+  },
+  {
+    "paper_id": "P019",
+    "question_id": "P019_Q_table",
+    "evidence_type": "table",
+    "question": "According to the reward scale hyperparameter table, what reward scale is used for the Ant-v1 environment, and which environment uses the highest reward scale?",
+    "gold_answer": "Ant-v1 uses a reward scale of 5. Humanoid-v1 uses the highest reward scale at 20, compared to 10 for Humanoid (rllab) and 5 for the other four environments (Hopper-v1, Walker2d-v1, HalfCheetah-v1, Ant-v1).",
+    "source_location": "Table 2, Appendix D, Hyperparameters",
+    "gold_chunk_ids_naive": ["P019_039"],
+    "gold_chunk_ids_structured": ["P019_046"]
+  },
+  {
+    "paper_id": "P019",
+    "question_id": "P019_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the soft Q-function's Bellman residual loss, and what does the target Q-hat depend on?",
+    "gold_answer": "J_Q(theta) = E[(1/2)(Q_theta(s_t,a_t) - Q_hat(s_t,a_t))^2], where the target Q_hat(s_t,a_t) = r(s_t,a_t) + gamma*E[V_psi_bar(s_{t+1})] depends on a separate target value network V_psi_bar, typically updated as an exponential moving average of the value network weights.",
+    "source_location": "Section 4.2, Equations 7-8",
+    "gold_chunk_ids_naive": ["P019_016"],
+    "gold_chunk_ids_structured": ["P019_019"]
+  },
+  {
+    "paper_id": "P020",
+    "question_id": "P020_Q_text",
+    "evidence_type": "text",
+    "question": "What six extensions to DQN does Rainbow combine, and why were these specific six selected?",
+    "gold_answer": "Double Q-learning (addressing overestimation bias), prioritized experience replay (replaying transitions with more to learn from more often), dueling networks (separating state value and action advantage), multi-step learning (n-step bootstrap targets), distributional Q-learning (learning a categorical distribution of returns instead of the mean), and Noisy Nets (stochastic layers for exploration) -- selected because each addresses a distinct concern within a shared framework, making them plausible to combine.",
+    "source_location": "Introduction",
+    "gold_chunk_ids_naive": ["P020_000"],
+    "gold_chunk_ids_structured": ["P020_001"]
+  },
+  {
+    "paper_id": "P020",
+    "question_id": "P020_Q_table",
+    "evidence_type": "table",
+    "question": "According to the median normalized score comparison table, what score does Rainbow achieve in the no-ops regime, and how does this compare to the next-best baseline?",
+    "gold_answer": "Rainbow achieves a median score of 223% in the no-ops regime, compared to 164% for Distributional DQN, the next-best baseline.",
+    "source_location": "Table 2, Comparison to published baselines",
+    "gold_chunk_ids_naive": ["P020_020"],
+    "gold_chunk_ids_structured": ["P020_027"]
+  },
+  {
+    "paper_id": "P020",
+    "question_id": "P020_Q_equation",
+    "evidence_type": "equation",
+    "question": "What loss function does Double Q-learning use to address DQN's overestimation bias, and how does it differ from standard DQN's loss?",
+    "gold_answer": "(R_{t+1} + gamma*q_theta_bar(S_{t+1}, argmax_a' q_theta(S_{t+1},a')) - q_theta(S_t,A_t))^2. It decouples action selection (using the online network theta) from action evaluation (using the target network theta_bar), unlike standard DQN's loss, which uses the target network for both selection (via max) and evaluation.",
+    "source_location": "Section 'Double Q-learning'",
+    "gold_chunk_ids_naive": ["P020_004"],
+    "gold_chunk_ids_structured": ["P020_011"]
+  },
+      {
+    "paper_id": "P021",
+    "question_id": "P021_Q_text",
+    "evidence_type": "text",
+    "question": "According to Section 6, what is the primary practical challenge in training GANs, and what failure mode ('the Helvetica scenario') does this challenge risk?",
+    "gold_answer": "The discriminator D must be kept well synchronized with the generator G during training -- G must not be trained too much without updating D, to avoid a failure mode called 'the Helvetica scenario,' where G collapses too many values of z to the same value of x, losing the diversity needed to model p_data.",
+    "source_location": "Section 6, Advantages and disadvantages",
+    "gold_chunk_ids_naive": ["P021_018"],
+    "gold_chunk_ids_structured": ["P021_024"]
+  },
+  {
+    "paper_id": "P021",
+    "question_id": "P021_Q_table",
+    "evidence_type": "table",
+    "question": "According to the Parzen window-based log-likelihood comparison table, what score does Adversarial nets achieve on MNIST, and how does this compare to Deep GSN?",
+    "gold_answer": "Adversarial nets achieve 225+/-2 on MNIST, the best score in the table, compared to Deep GSN's 214+/-1.1 and DBN's 138+/-2.",
+    "source_location": "Table 1, Section 5",
+    "gold_chunk_ids_naive": ["P021_015"],
+    "gold_chunk_ids_structured": ["P021_018"]
+  },
+  {
+    "paper_id": "P021",
+    "question_id": "P021_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the minimax objective function that G and D play, and what is each network trying to optimize?",
+    "gold_answer": "min_G max_D V(D,G) = E_x~pdata(x)[log D(x)] + E_z~pz(z)[log(1-D(G(z)))]. D is trained to maximize the probability of correctly labeling both real and generated samples, while G is trained to minimize log(1-D(G(z))), i.e. to fool D.",
+    "source_location": "Section 3, Equation 1",
+    "gold_chunk_ids_naive": ["P021_007"],
+    "gold_chunk_ids_structured": ["P021_007"]
+  },
+  {
+    "paper_id": "P022",
+    "question_id": "P022_Q_text",
+    "evidence_type": "text",
+    "question": "What is the reparameterization trick, and why is it necessary for training the VAE with gradient-based methods?",
+    "gold_answer": "The reparameterization trick expresses the latent variable z as a deterministic, differentiable function of the input x and an auxiliary noise variable epsilon (e.g. z = mu + sigma*epsilon for a Gaussian posterior, with epsilon~N(0,I)), rather than sampling z directly from qφ(z|x). This is necessary because directly sampling z as a stochastic node blocks gradients from backpropagating through it; reparameterizing moves the randomness into an external input the gradient doesn't need to flow through, making the lower bound differentiable and optimizable via standard stochastic gradient methods.",
+    "source_location": "Section 2.4, The reparameterization trick",
+    "gold_chunk_ids_naive": ["P022_011"],
+    "gold_chunk_ids_structured": ["P022_016"]
+  },
+  {
+    "paper_id": "P022",
+    "question_id": "P022_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the closed-form solution for the KL divergence term when both the prior and the approximate posterior are Gaussian, as used in the concrete SGVB estimator?",
+    "gold_answer": "-D_KL(q_phi(z)||p_theta(z)) = (1/2) * sum_{j=1}^{J} (1 + log((sigma_j)^2) - (mu_j)^2 - (sigma_j)^2), the analytically-integrated regularization term that lets the VAE avoid Monte Carlo estimation of the KL divergence when the prior is a standard Gaussian and the posterior is Gaussian with diagonal covariance.",
+    "source_location": "Appendix B / Section 3, Equation 10",
+    "gold_chunk_ids_naive": ["P022_027"],
+    "gold_chunk_ids_structured": ["P022_036"]
+  },
+  {
+    "paper_id": "P023",
+    "question_id": "P023_Q_text",
+    "evidence_type": "text",
+    "question": "According to Section 3, what does the simplified training objective L_simple require the network to predict, and why did the authors choose this over predicting the forward process posterior mean directly?",
+    "gold_answer": "L_simple requires the network epsilon_theta to predict the noise epsilon that was added to x_0 to produce x_t, rather than directly predicting the posterior mean. This epsilon-prediction parameterization both resembles Langevin dynamics and simplifies the variational bound into an objective resembling denoising score matching, and was found empirically to produce better sample quality than directly predicting x_0.",
+    "source_location": "Section 3.2, Reverse process and L_1:T-1",
+    "gold_chunk_ids_naive": ["P023_008"],
+    "gold_chunk_ids_structured": ["P023_011"]
+  },
+  {
+    "paper_id": "P023",
+    "question_id": "P023_Q_table",
+    "evidence_type": "table",
+    "question": "According to the sample quality comparison table, what Inception Score (IS) and FID score does the unconditional DDPM model achieve on CIFAR10?",
+    "gold_answer": "DDPM achieves an Inception Score of 9.46 and a state-of-the-art FID score of 3.17 on unconditional CIFAR10 -- better sample quality than most models in the literature, including class-conditional models.",
+    "source_location": "Table 1, Section 4.1, Sample quality",
+    "gold_chunk_ids_naive": ["P023_010"],
+    "gold_chunk_ids_structured": ["P023_017"]
+  },
+  {
+    "paper_id": "P023",
+    "question_id": "P023_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the simplified training objective L_simple that DDPM actually optimizes in practice, and what does the network epsilon_theta learn to predict?",
+    "gold_answer": "L_simple(theta) = E_t,x0,epsilon[||epsilon - epsilon_theta(sqrt(alpha_bar_t)*x0 + sqrt(1-alpha_bar_t)*epsilon, t)||^2], a simple noise-prediction mean-squared-error loss where the network epsilon_theta learns to predict the Gaussian noise epsilon that was added to the clean image x0 to produce the noisy image x_t at a randomly sampled timestep t.",
+    "source_location": "Section 3.4, Equation 14",
+    "gold_chunk_ids_naive": ["P023_007"],
+    "gold_chunk_ids_structured": ["P023_011"]
+  },
+  {
+    "paper_id": "P024",
+    "question_id": "P024_Q_text",
+    "evidence_type": "text",
+    "question": "How does Latent Diffusion Model (LDM) reduce the computational cost of training diffusion models compared to prior pixel-space diffusion models, and what enables this?",
+    "gold_answer": "LDM applies the diffusion process in the compressed latent space of a pretrained autoencoder, rather than directly in pixel space. This is enabled by first training a perceptual compression autoencoder (encoder E, decoder D) that reduces high-dimensional images to a much smaller latent representation while preserving perceptual quality; the diffusion model then operates entirely on this lower-dimensional latent code, dramatically reducing computational cost.",
+    "source_location": "Section 3.1, Perceptual Image Compression",
+    "gold_chunk_ids_naive": ["P024_012"],
+    "gold_chunk_ids_structured": ["P024_013"]
+  },
+  {
+    "paper_id": "P024",
+    "question_id": "P024_Q_table",
+    "evidence_type": "table",
+    "question": "According to the reported results, how much does moving from pixel-space diffusion (LDM-1) to latent-space diffusion (LDM-4) improve training/sampling throughput and FID score, per Table 6?",
+    "gold_answer": "A speed-up of at least 2.7x between pixel- and latent-based diffusion models, while improving FID scores by a factor of at least 1.6x.",
+    "source_location": "Table 6, Section 4.5 / Table 8 discussion",
+    "gold_chunk_ids_naive": ["P024_032"],
+    "gold_chunk_ids_structured": ["P024_032"]
+  },
+  {
+    "paper_id": "P024",
+    "question_id": "P024_Q_equation",
+    "evidence_type": "equation",
+    "question": "How does LDM incorporate conditioning information (such as text prompts) into the diffusion process via the cross-attention mechanism?",
+    "gold_answer": "A domain-specific encoder tau_theta(y) maps the conditioning input y (e.g. text) into an intermediate representation, which is then mapped into the intermediate layers of the UNet via a cross-attention layer: the queries Q come from the latent representation z_t's features, while the keys and values are projected from the conditioning signal tau_theta(y).",
+    "source_location": "Section 3.3, Conditioning Mechanisms",
+    "gold_chunk_ids_naive": ["P024_016"],
+    "gold_chunk_ids_structured": ["P024_018"]
+  },
+  {
+    "paper_id": "P025",
+    "question_id": "P025_Q_text",
+    "evidence_type": "text",
+    "question": "What is 'posterior collapse,' and how does VQ-VAE's design avoid this problem?",
+    "gold_answer": "Posterior collapse is a failure mode in VAEs with a powerful autoregressive decoder, where the decoder becomes powerful enough to model the data well on its own and the latent variables end up being ignored. VQ-VAE avoids this because its discrete latent codes, produced via vector quantization (nearest-neighbor lookup against a learned embedding table), are directly used as the input to the decoder rather than being merely conditioned on, forcing the decoder to depend on them.",
+    "source_location": "Abstract / Introduction",
+    "gold_chunk_ids_naive": ["P025_003"],
+    "gold_chunk_ids_structured": ["P025_003"]
+  },
+  {
+    "paper_id": "P025",
+    "question_id": "P025_Q_table",
+    "evidence_type": "table",
+    "question": "According to the comparison of VAE, VQ-VAE, and VIMCO on CIFAR-10, what negative log-likelihood (in bits/dim) does each model achieve?",
+    "gold_answer": "The VAE, VQ-VAE and VIMCO models obtain 4.51 bits/dim, 4.67 bits/dim and 5.14 bits/dim respectively -- VQ-VAE is the first discrete latent variable model to challenge the performance of continuous VAEs.",
+    "source_location": "Section 4.1, Comparison with continuous variables",
+    "gold_chunk_ids_naive": ["P025_014"],
+    "gold_chunk_ids_structured": ["P025_017"]
+  },
+  {
+    "paper_id": "P025",
+    "question_id": "P025_Q_equation",
+    "evidence_type": "equation",
+    "question": "What are the three terms of VQ-VAE's total training loss, and what does each one optimize?",
+    "gold_answer": "(1) the reconstruction loss log p(x|zq(x)), which trains the encoder and decoder; (2) the VQ (codebook) loss ||sg[ze(x)]-e||^2, which moves the embedding vectors toward the encoder's output, updating only the embedding table (sg = stop-gradient operator); (3) the commitment loss beta*||ze(x)-sg[e]||^2, which encourages the encoder's output to stay close to the chosen embedding, preventing the embedding space volume from growing arbitrarily.",
+    "source_location": "Section 3.2, Equation 3",
+    "gold_chunk_ids_naive": ["P025_012"],
+    "gold_chunk_ids_structured": ["P025_014"]
+  },
+    {
+    "paper_id": "P026",
+    "question_id": "P026_Q_text",
+    "evidence_type": "text",
+    "question": "What is Adam designed to combine the advantages of, and what specific benefit does each contribute?",
+    "gold_answer": "Adam is designed to combine the advantages of two popular methods: AdaGrad, which works well with sparse gradients, and RMSProp, which works well in on-line and non-stationary settings.",
+    "source_location": "Section 1, Introduction",
+    "gold_chunk_ids_naive": ["P026_002"],
+    "gold_chunk_ids_structured": ["P026_002"]
+  },
+  {
+    "paper_id": "P026",
+    "question_id": "P026_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is Adam's full parameter update rule, including the bias-correction step, and why is bias correction necessary?",
+    "gold_answer": "m_t = beta1*g_t + (1-beta1)*m_{t-1} (first moment), v_t = beta2*g_t^2 + (1-beta2)*v_{t-1} (second moment), then bias-corrected as m_hat_t = m_t/(1-(1-beta1)^t) and v_hat_t = v_t/(1-(1-beta2)^t), with the update theta_t = theta_{t-1} - alpha*m_hat_t/(sqrt(v_hat_t)+epsilon). Bias correction is necessary because the moving averages are initialized at zero, biasing the estimates toward zero especially in early timesteps and when decay rates beta are close to 1.",
+    "source_location": "Algorithm 1 / Section 3, Initialization Bias Correction",
+    "gold_chunk_ids_naive": ["P026_003"],
+    "gold_chunk_ids_structured": ["P026_004"]
+  },
+  {
+    "paper_id": "P027",
+    "question_id": "P027_Q_text",
+    "evidence_type": "text",
+    "question": "What is internal covariate shift, and how does Batch Normalization address it?",
+    "gold_answer": "Internal covariate shift is the change in the distribution of network activations due to the change in network parameters during training, which requires each layer to continuously adapt to new input distributions and slows training. Batch Normalization addresses this by normalizing layer inputs using mini-batch statistics (mean and variance), fixing the mean and variance of layer inputs and making this normalization part of the model architecture itself.",
+    "source_location": "Section 2, Towards Reducing Internal Covariate Shift",
+    "gold_chunk_ids_naive": ["P027_007"],
+    "gold_chunk_ids_structured": ["P027_008"]
+  },
+  {
+    "paper_id": "P027",
+    "question_id": "P027_Q_table",
+    "evidence_type": "table",
+    "question": "According to the reported ImageNet results, what top-5 validation error does an ensemble of batch-normalized networks achieve, and how does this compare to human-level performance and training speed?",
+    "gold_answer": "4.9% top-5 validation error (4.8% test error), exceeding the accuracy of human raters, while also matching the original model's accuracy using only 7% of the training steps.",
+    "source_location": "Abstract / Section 4.2, ImageNet classification",
+    "gold_chunk_ids_naive": ["P027_030"],
+    "gold_chunk_ids_structured": ["P027_037"]
+  },
+  {
+    "paper_id": "P027",
+    "question_id": "P027_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the Batch Normalizing Transform, and what role do the learned parameters gamma and beta play?",
+    "gold_answer": "Given a mini-batch of activations, compute the mini-batch mean mu_B and variance sigma_B^2, normalize as x_hat_i = (x_i - mu_B)/sqrt(sigma_B^2 + epsilon), then scale and shift as y_i = gamma*x_hat_i + beta. The learned parameters gamma and beta restore the network's representation power -- by setting gamma = sqrt(Var[x]) and beta = E[x], the transform could recover the original (unnormalized) activations if that were optimal, ensuring BN doesn't constrain what the layer can represent.",
+    "source_location": "Algorithm 1, Section 3",
+    "gold_chunk_ids_naive": ["P027_011"],
+    "gold_chunk_ids_structured": ["P027_013"]
+  },
+  {
+    "paper_id": "P028",
+    "question_id": "P028_Q_text",
+    "evidence_type": "text",
+    "question": "Why is standard batch normalization difficult to apply to recurrent neural networks, and how does layer normalization avoid this problem?",
+    "gold_answer": "Batch normalization requires computing and storing separate statistics for each time step, which is problematic when a test sequence is longer than any training sequence, and its effect depends on mini-batch size. Layer normalization avoids this because its normalization statistics (mean and variance) are computed from all the summed inputs to the neurons within a single layer for a single training case, rather than across a mini-batch -- so it has only one set of gain and bias parameters shared over all time-steps and works even with batch size 1.",
+    "source_location": "Section 1, Introduction / Section 3.1",
+    "gold_chunk_ids_naive": ["P028_000"],
+    "gold_chunk_ids_structured": ["P028_000"]
+  },
+  {
+    "paper_id": "P028",
+    "question_id": "P028_Q_table",
+    "evidence_type": "table",
+    "question": "According to the skip-thought vectors results table, how does adding layer normalization (Ours + LN) change accuracy on the CR (customer reviews) task compared to the baseline (Ours) after 1M iterations, and with further training to 1 month?",
+    "gold_answer": "Ours + LN achieves 82.6% accuracy on CR after 1M iterations, up from 81.8% for the baseline without layer normalization, and further improves to 83.1% when trained for a full month (Ours + LN with dagger symbol).",
+    "source_location": "Table 3, Section 6.3, Skip-thought vectors",
+    "gold_chunk_ids_naive": ["P028_025"],
+    "gold_chunk_ids_structured": ["P028_027"]
+  },
+  {
+    "paper_id": "P028",
+    "question_id": "P028_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the general layer normalization function LN(z; alpha, beta), and how do its mu and sigma statistics differ from batch normalization's?",
+    "gold_answer": "LN(z;alpha,beta) = ((z-mu)/sigma) * alpha + beta, where mu = (1/D)*sum(z_i) and sigma = sqrt((1/D)*sum((z_i-mu)^2)) are computed over all D hidden units within a single layer for a single training case. Unlike batch normalization, where mu and sigma are computed across training cases in a mini-batch, in layer normalization all hidden units in a layer share the same mu and sigma, but different training cases compute their own independent normalization terms.",
+    "source_location": "Supplementary Material, Equations 15-16",
+    "gold_chunk_ids_naive": ["P028_037"],
+    "gold_chunk_ids_structured": ["P028_041"]
+  },
+  {
+    "paper_id": "P029",
+    "question_id": "P029_Q_text",
+    "evidence_type": "text",
+    "question": "What does it mean for an attention algorithm to be 'IO-aware,' and why is this the key idea behind FlashAttention?",
+    "gold_answer": "IO-aware means carefully accounting for reads and writes between different levels of GPU memory (fast on-chip SRAM vs. slower high-bandwidth memory, HBM), rather than just minimizing FLOPs. This matters because on modern GPUs compute has become much faster than memory access, so most Transformer operations -- especially memory-bound ones like softmax -- are bottlenecked by HBM accesses rather than arithmetic, meaning reducing HBM reads/writes (not FLOP count) is what actually speeds up wall-clock runtime.",
+    "source_location": "Section 1, Introduction / Section 2.1",
+    "gold_chunk_ids_naive": ["P029_004"],
+    "gold_chunk_ids_structured": ["P029_003"]
+  },
+  {
+    "paper_id": "P029",
+    "question_id": "P029_Q_table",
+    "evidence_type": "table",
+    "question": "According to the reported BERT-large training results, how much faster is FlashAttention than the Nvidia MLPerf 1.1 speed record, in wall-clock training time?",
+    "gold_answer": "FlashAttention trains BERT-large to the target accuracy in 17.4 +/- 1.4 minutes, compared to 20.0 +/- 1.5 minutes for the Nvidia MLPerf 1.1 record -- a 15% speedup, averaged over 10 runs on 8xA100 GPUs.",
+    "source_location": "Table 1, Section 4.1",
+    "gold_chunk_ids_naive": ["P029_021"],
+    "gold_chunk_ids_structured": ["P029_024"]
+  },
+  {
+    "paper_id": "P029",
+    "question_id": "P029_Q_equation",
+    "evidence_type": "equation",
+    "question": "According to Theorem 2, how many HBM accesses does standard attention require compared to FlashAttention, in terms of sequence length N, head dimension d, and SRAM size M?",
+    "gold_answer": "Standard attention requires Theta(Nd + N^2) HBM accesses, while FlashAttention requires Theta(N^2*d^2/M) HBM accesses. Since d^2 is typically many times smaller than M (SRAM size), FlashAttention requires many times fewer HBM accesses than standard attention.",
+    "source_location": "Section 3.2, Theorem 2",
+    "gold_chunk_ids_naive": ["P029_068"],
+    "gold_chunk_ids_structured": ["P029_082"]
+  },
+  {
+    "paper_id": "P030",
+    "question_id": "P030_Q_text",
+    "evidence_type": "text",
+    "question": "What is the central finding of the Chinchilla paper regarding how model size and training data should scale together, and how does this contrast with prior practice?",
+    "gold_answer": "For compute-optimal training, model size and the number of training tokens should be scaled in equal proportions -- for every doubling of model size, training tokens should also double. This contrasts with prior practice (following Kaplan et al. 2020), where the field trained increasingly larger models while keeping training data roughly constant at ~300 billion tokens, resulting in significantly undertrained large models.",
+    "source_location": "Abstract / Section 1, Introduction",
+    "gold_chunk_ids_naive": ["P030_002"],
+    "gold_chunk_ids_structured": ["P030_004"]
+  },
+  {
+    "paper_id": "P030",
+    "question_id": "P030_Q_table",
+    "evidence_type": "table",
+    "question": "According to the comparison of current LLMs, how many parameters and training tokens does Chinchilla use compared to Gopher, despite matching Gopher's training compute?",
+    "gold_answer": "Chinchilla uses 70 billion parameters trained on 1.4 trillion tokens, compared to Gopher's 280 billion parameters trained on just 300 billion tokens -- Chinchilla is 4x smaller but trained on roughly 4.7x more tokens, using the same compute budget.",
+    "source_location": "Table 1, Section 1",
+    "gold_chunk_ids_naive": ["P030_005"],
+    "gold_chunk_ids_structured": ["P030_002"]
+  },
+  {
+    "paper_id": "P030",
+    "question_id": "P030_Q_equation",
+    "evidence_type": "equation",
+    "question": "What is the parametric functional form Chinchilla fits to model the final pre-training loss as a function of model size N and training tokens D, and what does each of the three terms represent?",
+    "gold_answer": "L_hat(N,D) = E + A/N^alpha + B/D^beta. E captures the irreducible loss of an ideal generative process on the data distribution (roughly the entropy of natural text); A/N^alpha captures the additional loss from a finite-capacity transformer with N parameters underperforming the ideal process; B/D^beta captures the loss from the model not being trained to convergence, having seen only a finite number of tokens D.",
+    "source_location": "Section 3.3, Equation 2",
+    "gold_chunk_ids_naive": ["P030_016"],
+    "gold_chunk_ids_structured": ["P030_020"]
   }
 ]
