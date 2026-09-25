@@ -1,67 +1,94 @@
-# Lost in Serialization: How Document Parsing Affects Scientific RAG Retrieval
+# Lost in Serialization: How PDF Parsing Strategy Affects RAG Retrieval Quality
 
-A controlled pilot study measuring how PDF-to-text serialization quality affects retrieval performance in a Retrieval-Augmented Generation (RAG) pipeline over scientific ML papers, across three retrieval strategies (BM25, dense, hybrid) and three evidence types (text, table, equation).
+An empirical study comparing **naive text extraction** against **structure-aware parsing (Docling)** for Retrieval-Augmented Generation (RAG) pipelines, evaluated across a gold-annotated benchmark of 30 machine learning research papers.
 
-## Research Question
+## Key Finding
 
-How does document parsing/serialization quality interact with retrieval strategy and query evidence type in scientific RAG? Specifically: does a modern layout-aware parser (Docling) actually improve retrieval over a naive text-flattening extractor (PyMuPDF), and does that answer depend on what kind of evidence a question needs?
+PDF parsing strategy does **not** affect RAG retrieval uniformly across content types. Structure-aware parsing catastrophically degrades **table** retrieval (MRR drops from ~0.45–0.59 to ~0.09–0.20; Wilcoxon *p* < 0.0002, effect size *r* > 0.92 across all retrievers) while leaving **text** and **equation** retrieval statistically unaffected (*p* > 0.38). However, six confirmed cases show that structure-aware parsing can silently discard entire equations — replacing them with a `<!-- formula-not-decoded -->` placeholder — while the corrupted chunk is *still retrieved successfully, including at rank 1*, by every retriever tested. This demonstrates that retrieval metrics alone (MRR, Hit@k) cannot detect a real and reproducible class of content-fidelity failure.
 
-## Key Findings (pilot, n=5 papers)
+## Benchmark Overview
 
-This is a small pilot, not a large-scale benchmark — see Limitations below — but it surfaced concrete, mechanism-level findings:
-
-- **Structure-aware parsing can *hurt* table retrieval.** Docling produced cleaner-looking tables but sometimes separated a table from its identifying caption into a different chunk, making it unretrievable by a question that references the table by name. MRR for table questions dropped from 0.40 (naive, BM25) to 0.06 (structured, BM25).
-- **Naive extraction can silently corrupt equations.** PyMuPDF's naive text extraction turned a summation symbol (Σ) into the literal letter "X" in XGBoost's regularized objective — a font-encoding artifact, not a formatting quirk.
-- **Structure-aware parsing can fail open on formulas.** Docling replaced an undecodable equation with a `<!-- formula-not-decoded -->` placeholder, losing the content entirely — while the naive extractor, by coincidence, preserved the same formula's Unicode math characters correctly.
-- **Hybrid retrieval (Reciprocal Rank Fusion) is not a free win.** It improved results for equation questions but *underperformed* the better single retriever for several text and table questions, when the two retrievers' quality was highly asymmetric.
-
-## Results Summary (Mean Reciprocal Rank, averaged over 5 papers)
-
-| Evidence type | Parsing | BM25 | Dense | Hybrid (RRF) |
-|---|---|---|---|---|
-| Text | Naive | 0.69 | 0.07 | 0.30 |
-| Text | Structured | 0.80 | 0.64 | 0.54 |
-| Table | Naive | 0.40 | 0.81 | 0.70 |
-| Table | Structured | 0.06 | 0.12 | 0.10 |
-| Equation | Naive | 0.20 | 0.51 | 0.55 |
-| Equation | Structured | 0.19 | 0.37 | 0.58 |
+- **30 papers**, organized into 6 thematic domains (5 papers each): foundational architectures, NLP, computer vision, reinforcement learning, generative models, and systems/optimization
+- **88 gold-annotated questions** (30 text, 28 table, 30 equation), each independently grounded against the original source PDF and paired with a verified gold-chunk ID in both parsing conditions
+- **Two independent parsed corpora** per paper: naive (PyMuPDF, linear character-stream extraction) and structured (Docling, layout- and table-structure-aware)
+- **Three retrieval methods**: BM25 (`rank_bm25`), dense retrieval (`BAAI/bge-small-en-v1.5`), and hybrid (Reciprocal Rank Fusion, k=60)
 
 ## Repository Structure
 
 ```
 ├── data/
-│   ├── raw_pdfs/            # Source papers (see Reproduction below for links)
-│   ├── parsed_naive/        # PyMuPDF text extraction output
-│   ├── parsed_structured/   # Docling markdown extraction output
-│   ├── chunks_naive/        # Chunked naive corpus (retrieval-ready)
-│   └── chunks_structured/   # Chunked structured corpus (retrieval-ready)
+│   ├── raw_pdfs/                  # Source PDFs (30 papers)
+│   ├── parsed_naive/              # PyMuPDF text extraction output
+│   ├── parsed_structured/         # Docling Markdown output
+│   ├── chunks_naive/chunks.json   # Naive corpus, chunked (2,051 chunks)
+│   ├── chunks_structured/chunks.json  # Structured corpus, chunked (2,561 chunks)
+│   ├── summary_overall.csv        # Aggregate MRR/Hit@k by corpus x retriever
+│   └── summary_by_evidence_type.csv   # Breakdown by text/table/equation
 ├── questions/
-│   └── questions.json       # 15 hand-verified questions with gold chunk IDs
-├── src/
-│   ├── parsing/               # PDF -> text/markdown extraction scripts
-│   ├── retrieval/             # Chunking, BM25, and dense retrieval scripts
-│   └── eval/                  # Full evaluation pipeline + gold-chunk verification tools
+│   └── questions.json             # 88 gold-annotated questions with verified chunk IDs
 ├── results/
-│   └── evaluation_results.csv # Full 90-row evaluation matrix (15 questions x 2 corpora x 3 retrievers)
-├── requirements.txt
+│   └── evaluation_results.csv     # Full per-question retrieval results (528 rows)
+├── src/
+│   ├── retrieval/
+│   │   └── chunk_documents.py     # Word-budget chunking pipeline (both corpora)
+│   └── eval/
+│       ├── find_all_gold_chunks.py        # Gold-chunk search/verification tool
+│       ├── verify_original_gold_chunks.py # Verifies original 5-paper gold chunks
+│       ├── inspect_chunks.py              # Corpus-wide chunk/paper sanity checks
+│       ├── find_size_outliers.py          # Flags oversized/undersized chunks
+│       ├── aggregate_results.py           # Computes mean MRR/Hit@k summaries
+│       └── wilcoxon_by_evidence_type.py   # Statistical significance testing
 └── README.md
 ```
 
-## Reproducing This Project
+## Methodology Summary
 
-1. Create the environment: `conda create -n rag-study python=3.11 -y && conda activate rag-study`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Download the 5 source papers into `data/raw_pdfs/` (XGBoost: arxiv.org/pdf/1603.02754, Mamba: arxiv.org/pdf/2312.00752, DINOv2: arxiv.org/pdf/2304.07193, LoRA: arxiv.org/pdf/2106.09685, DreamerV3: arxiv.org/pdf/2301.04104), named `P001.pdf` through `P005.pdf` respectively
-4. Run extraction: `python src/parsing/naive_extract.py` and `python src/parsing/structured_extract.py`
-5. Run chunking: `python src/retrieval/chunk_documents.py`
-6. Run the full evaluation: `python src/eval/eval_full.py`
-7. Results land in `results/evaluation_results.csv`
+1. **Parsing** — Each PDF is converted independently via PyMuPDF (naive) and Docling (structured), producing two full-text representations differing only in parsing strategy.
+2. **Chunking** — A shared word-budget chunker (200-word target, 60-word minimum merge threshold, 600-word table hard cap with row-boundary splitting) processes both corpora identically.
+3. **Gold-chunk annotation** — Each of the 88 questions is manually grounded against the original paper and matched to its supporting chunk ID(s) in both corpora via targeted search and full-text verification.
+4. **Retrieval** — BM25, dense (BGE embeddings), and hybrid (RRF, k=60) rankings are computed for every question against both corpora.
+5. **Evaluation** — Mean Reciprocal Rank (MRR) and Hit@1/3/5 are computed per question, then aggregated overall and stratified by evidence type (text/table/equation).
+6. **Significance testing** — Paired Wilcoxon signed-rank tests (per retriever, per evidence type) with Bonferroni correction for the resulting 9 comparisons.
 
-## Limitations
+## Reproducing the Results
 
-- Pilot scale only: 5 papers, 15 questions. Results are illustrative and mechanism-level, not statistically powered.
-- Closely related, larger-scale work exists: [OHR-Bench (ICCV 2025)](https://arxiv.org/abs/2412.02592) evaluates OCR/parsing quality's effect on RAG across 7 domains and 8,500+ pages. This project is scoped narrower and differently — specifically contrasting a text-flattening extractor against a modern layout-aware parser on scientific ML literature, with a focus on the retrieval-strategy interaction and detailed qualitative failure-mode analysis.
+```bash
+# 1. Chunk both parsed corpora
+python src/retrieval/chunk_documents.py
 
-## Author
+# 2. Run the full evaluation (BM25 + dense + hybrid, both corpora, all 88 questions)
+python src/eval/eval_full.py
 
-Harry Abraham H — final-year AIML student. Built as a final-year project and IEEE submission pilot study.
+# 3. Aggregate results
+python src/eval/aggregate_results.py
+
+# 4. Run significance tests
+python src/eval/wilcoxon_by_evidence_type.py
+```
+
+## Known Corpus Limitations
+
+- Two papers (VAE, Adam) contain no genuine numeric results table in their original publication — both report results exclusively via learning-curve figures — and are therefore evaluated on text and equation evidence only.
+- Gold-chunk annotation was performed by a single annotator with AI-assisted search and verification tooling, not multiple independent annotators with inter-annotator agreement measurement.
+
+## Citation
+
+If you use this benchmark, please cite:
+
+```bibtex
+@inproceedings{lostinserialization2026,
+  title={Lost in Serialization: How PDF Parsing Strategy Affects RAG Retrieval Quality},
+  author={[Author names -- to be finalized at publication]},
+  year={2026},
+  note={Under review}
+}
+```
+
+## License
+
+[Specify a license here -- e.g., MIT for code, CC-BY for the question bank/annotations -- before making this repository public for review]
+
+## Authors
+
+Harry Abraham H, Devesh Sai Pandian Govindaraj — St. Joseph's College of Engineering, OMR, Chennai, India
+Advised by Dr. Ancy Stephen (Associate Professor) and Mrs. Umayal A. R. (Assistant Professor)
